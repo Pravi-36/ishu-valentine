@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ishu 💖 Valentine</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        /* floating hearts */
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.6);
+            animation: float 6s linear infinite;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(100vh);
+            }
+
+            to {
+                transform: translateY(-10vh);
+            }
+        }
+
+        .card {
+            background: white;
+            width: 340px;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        h1 {
+            color: #ff4d6d;
+        }
+
+        p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        button {
+            padding: 12px 26px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #yesBtn {
+            background: #ff4d6d;
+            color: white;
+            margin-right: 10px;
+        }
+
+        #noBtn {
+            background: #eee;
+            position: absolute;
+        }
+
+        .loader {
+            display: none;
+            font-size: 14px;
+            color: #ff4d6d;
+            margin-top: 15px;
+        }
+
+        .result {
+            display: none;
+        }
+
+        .result img {
+            width: 100%;
+            border-radius: 15px;
+            margin-top: 10px;
+        }
+
+        .love-text {
+            margin-top: 12px;
+            color: #ff4d6d;
+            font-size: 16px;
+            min-height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h1>Ishu 💕</h1>
+        <p>Will you be my Valentine? 🌹<br>
+            Warning: Saying NO may cause heart damage 😌</p>
+
+        <button id="yesBtn" onclick="startLove()">YES 💖</button>
+        <button id="noBtn" onmouseover="moveNo()">NO 😜</button>
+
+        <div class="loader" id="loader"></div>
+
+        <div class="result" id="result">
+            <img src="love.png">
+            <div class="love-text" id="typeText"></div>
+        </div>
+    </div>
+
+    <script>
+        /* hearts */
+        for (let i = 0; i < 15; i++) {
+            let h = document.createElement("div");
+            h.className = "heart";
+            h.innerHTML = "💖";
+            h.style.left = Math.random() * 100 + "vw";
+            h.style.animationDuration = (3 + Math.random() * 4) + "s";
+            document.body.appendChild(h);
+        }
+
+        /* NO button logic */
+        function randomText() {
+            const texts = [
+                "Error 404: NO not found 🚫",
+                "Are you sure about that? 🤨",
+                "My heart can't handle that 💔",
+                "System crash incoming 💥",
+                "Choose wisely, Ishu 😌",
+                "That button doesn't work 😂",
+                "Suspicious activity detected 👀",
+                "Illegal move detected ⚠️",
+                "You almost broke my heart 😭",
+                "NO subscription expired ❌",
+                "Access denied 😈"
+            ];
+
+            return texts[Math.floor(Math.random() * texts.length)];
+        }
+
+        const noBtn = document.getElementById("noBtn");
+        let scale = 1;
+        function moveNo() {
+            noBtn.style.left = Math.random() * 250 + "px";
+            noBtn.style.top = Math.random() * 250 + "px";
+
+            scale -= 0.08;
+            noBtn.style.transform = `scale(${scale}) rotate(${Math.random() * 20 - 10}deg)`;
+
+            noBtn.innerText = randomText();
+
+            if (scale < 0.4) {
+                noBtn.innerText = "Too slow 😜";
+                setTimeout(() => {
+                    noBtn.style.display = "none";
+                }, 600);
+            }
+        }
+
+
+        /* YES flow */
+        function startLove() {
+            document.getElementById("yesBtn").style.display = "none";
+            noBtn.style.display = "none";
+            const loader = document.getElementById("loader");
+            loader.style.display = "block";
+
+            const steps = [
+                "Scanning your smile.... 😊",
+                "Checking heart compatibility.... 💓",
+                "Analyzing feelings.... 😌",
+                "Result loading.... ⏳"
+            ];
+
+            let i = 0;
+            let interval = setInterval(() => {
+                loader.innerText = steps[i++];
+                if (i === steps.length) {
+                    clearInterval(interval);
+                    loader.style.display = "none";
+                    showResult();
+                }
+            }, 1500);
+        }
+
+        function showResult() {
+            document.getElementById("result").style.display = "block";
+            typeWriter("I knew it, Ishu 😌❤️\n\nThis photo means everything to me…\nBecause it has my world in it 💘\n\nHappy Valentine’s Day 🌹");
+        }
+
+        /* typewriter */
+        function typeWriter(text) {
+            let i = 0;
+            const el = document.getElementById("typeText");
+            el.innerHTML = "";
+            const interval = setInterval(() => {
+                el.innerHTML += text.charAt(i) === "\n" ? "<br>" : text.charAt(i);
+                i++;
+                if (i >= text.length) clearInterval(interval);
+            }, 40);
+        }
+    </script>
+
+</body>
+
+</html>
